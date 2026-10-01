@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Omar Ibne Shahid</title>
-<meta name="description" content="Omar Ibne Shahid is a Lecturer in Electrical and Computer Engineering at North South University, Dhaka, working on medical AI: biomedical signal analysis, medical imaging and wearable health monitoring.">
+<meta name="description" content="Omar Ibne Shahid is a Lecturer in Electrical and Computer Engineering at North South University, Dhaka, working on AI in healthcare: medical informatics, biomedical signal processing and explainable AI.">
 <meta name="author" content="Omar Ibne Shahid">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Omar Ibne Shahid">
-<meta property="og:description" content="Lecturer, ECE, North South University. Research in medical AI, biomedical signal analysis and wearable health monitoring.">
+<meta property="og:description" content="Lecturer, ECE, North South University. Research in AI for healthcare, medical informatics, biomedical signal processing and explainable AI.">
 <meta name="theme-color" content="#FBFCFC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111820" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F5FA8'/%3E%3Cpath d='M6 36 H17 L20 31 L23 36 H26 L30 13 L35 49 L38 36 H43 Q47 28 51 36 H58' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -37,7 +37,7 @@
     { "@type": "CollegeOrUniversity", "name": "University of Dhaka" }
   ],
   "email": "mailto:omarshahid232@ieee.org",
-  "knowsAbout": ["Medical AI", "Biomedical signal processing", "Medical imaging", "Wearable health monitoring", "Pattern recognition"],
+  "knowsAbout": ["AI in healthcare", "Medical informatics", "Biomedical signal processing", "Explainable AI", "Medical image analysis"],
   "sameAs": [
     "https://scholar.google.com/citations?user=9KqsI5gAAAAJ&hl=en",
     "https://www.linkedin.com/in/omarshd/",
@@ -58,12 +58,8 @@
     --accent-hover: #174C87;
     --on-accent: #FFFFFF;
 
-    /* Medical signal figure: ECG-paper grid, raw signal in ink, model output in accent blue */
-    --grid-minor: rgba(205, 92, 106, 0.11);
-    --grid-major: rgba(205, 92, 106, 0.24);
-    --signal: #18212B;
-    --detect: #1F5FA8;
-    --detect-alpha: 0.12;
+    /* The data figure is always a dark viewer; it only needs an edge on dark pages */
+    --viewer-edge: transparent;
 
     --sans: "Bricolage Grotesque", "Segoe UI", system-ui, -apple-system, sans-serif;
     --serif: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
@@ -83,11 +79,7 @@
       --accent: #7EB3EE;
       --accent-hover: #A5CBF4;
       --on-accent: #0E1620;
-      --grid-minor: rgba(236, 132, 146, 0.08);
-      --grid-major: rgba(236, 132, 146, 0.18);
-      --signal: #D5DDE6;
-      --detect: #7EB3EE;
-      --detect-alpha: 0.2;
+      --viewer-edge: rgba(255, 255, 255, 0.08);
       color-scheme: dark;
     }
   }
@@ -100,11 +92,7 @@
     --accent: #7EB3EE;
     --accent-hover: #A5CBF4;
     --on-accent: #0E1620;
-    --grid-minor: rgba(236, 132, 146, 0.08);
-    --grid-major: rgba(236, 132, 146, 0.18);
-    --signal: #D5DDE6;
-    --detect: #7EB3EE;
-    --detect-alpha: 0.2;
+    --viewer-edge: rgba(255, 255, 255, 0.08);
     color-scheme: dark;
   }
 
@@ -223,39 +211,74 @@
   .links a[href=""] { display: none; }
   .links li:has(> a[href=""]) { display: none; }
 
-  /* ---------- Medical signal figure ---------- */
-  .monitor { margin: 48px 0 0; display: none; }
-  .js .monitor { display: block; }
-  .monitor-plot {
-    position: relative; height: 232px;
-    border: 1px solid var(--rule); border-radius: 10px; overflow: hidden;
-    background: var(--bg);
+  /* ---------- Multimodal data figure ---------- */
+  .viewer { margin: 48px 0 0; display: none; }
+  .js .viewer { display: block; }
+  .viewer-box {
+    --v-ink: #D3DCE6;
+    --v-dim: rgba(214, 224, 234, 0.68);
+    --v-faint: rgba(214, 224, 234, 0.44);
+    --v-rule: rgba(255, 255, 255, 0.08);
+    --v-grid: rgba(160, 190, 220, 0.05);
+    --v-grid-strong: rgba(160, 190, 220, 0.11);
+    --v-detect: #7EB3EE;
+    display: grid; grid-template-columns: 312px minmax(0, 1fr); height: 312px;
+    background: #0B131B; border: 1px solid var(--viewer-edge); border-radius: 12px; overflow: hidden;
   }
-  .monitor-plot svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-  .grid-minor, .grid-major { fill: none; stroke-width: 1; shape-rendering: crispEdges; }
-  .grid-minor { stroke: var(--grid-minor); }
-  .grid-major { stroke: var(--grid-major); }
-  .sep { stroke: var(--rule); stroke-width: 1; shape-rendering: crispEdges; }
-  .sig {
-    fill: none; stroke: var(--signal); stroke-width: 1.4;
-    stroke-linejoin: round; stroke-linecap: round;
+  .mri { position: relative; background: #080808; border-right: 1px solid var(--v-rule); overflow: hidden; }
+  .mri canvas, .mri svg {
+    position: absolute; top: 0; left: 50%; height: 100%; width: auto; aspect-ratio: 1 / 1;
+    transform: translateX(-50%); display: block;
   }
-  .band { fill: var(--detect); fill-opacity: var(--detect-alpha); }
-  .band-bar { fill: var(--detect); }
-  .peak { fill: var(--detect); opacity: 0; transition: opacity .25s ease; }
-  .peak.on { opacity: 1; }
-  .sweep { stroke: var(--detect); stroke-width: 1.5; opacity: .5; }
-  .ch-label, .readout { font-family: var(--sans); font-size: 12.5px; }
-  .ch-label { font-weight: 500; fill: var(--muted); }
-  .readout {
-    font-weight: 600; fill: var(--detect); font-variant-numeric: tabular-nums;
+  .vtag {
+    position: absolute; font-family: var(--sans); font-size: 11.5px; font-weight: 500; line-height: 1.2;
+    color: var(--v-dim); pointer-events: none;
+  }
+  .vtag.tl { top: 10px; left: 12px; }
+  .vtag.bl { bottom: 10px; left: 12px; }
+  .vtag.br { bottom: 10px; right: 12px; }
+  .vtag.side { top: 50%; transform: translateY(-50%); color: var(--v-faint); }
+  .vtag.l { left: 11px; }
+  .vtag.r { right: 11px; }
+  .vtag.out { color: var(--v-detect); font-weight: 600; opacity: 0; transition: opacity .4s ease; }
+  .vtag.out.on { opacity: 1; }
+  .seg {
+    fill: var(--v-detect); fill-opacity: .16; stroke: var(--v-detect); stroke-width: 1.6;
+    vector-effect: non-scaling-stroke; opacity: 0; transition: opacity .5s ease;
+  }
+  .seg.on { opacity: 1; }
+  .scan { stroke: var(--v-detect); stroke-width: 1.5; vector-effect: non-scaling-stroke; opacity: .6; }
+  .signals { position: relative; min-width: 0; }
+  .signals svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .s-grid, .s-grid2, .s-sep { fill: none; stroke-width: 1; shape-rendering: crispEdges; }
+  .s-grid { stroke: var(--v-grid); }
+  .s-grid2 { stroke: var(--v-grid-strong); }
+  .s-sep { stroke: var(--v-rule); }
+  .s-sig { fill: none; stroke: var(--v-ink); stroke-width: 1.25; stroke-linejoin: round; stroke-linecap: round; }
+  .s-sig.thin { stroke-width: 1; }
+  .s-band { fill: var(--v-detect); fill-opacity: .15; }
+  .s-bar { fill: var(--v-detect); }
+  .s-peak { fill: var(--v-detect); opacity: 0; transition: opacity .25s ease; }
+  .s-peak.on { opacity: 1; }
+  .s-sweep { stroke: var(--v-detect); stroke-width: 1.5; opacity: .5; }
+  .s-label, .s-out { font-family: var(--sans); font-size: 12px; }
+  .s-label { fill: var(--v-dim); font-weight: 500; }
+  .s-chan { font-family: var(--sans); font-size: 10.5px; font-weight: 500; fill: var(--v-faint); }
+  .s-out {
+    fill: var(--v-detect); font-weight: 600; font-variant-numeric: tabular-nums;
     opacity: 0; transition: opacity .4s ease;
   }
-  .readout.on { opacity: 1; }
-  .monitor figcaption {
-    margin-top: 10px; font-size: 0.95rem; color: var(--muted); font-style: italic;
+  .s-out.on { opacity: 1; }
+  .viewer figcaption { margin-top: 18px; max-width: 72ch; }
+  .viewer figcaption .lead {
+    display: block; font-family: var(--sans); font-size: 1.25rem; font-weight: 600;
+    letter-spacing: -0.01em; line-height: 1.3; color: var(--ink); margin-bottom: 6px;
   }
-  .monitor figcaption .key { color: var(--detect); font-style: normal; font-weight: 600; }
+  .viewer figcaption .rest { color: var(--muted); font-size: 1.02rem; }
+  .viewer figcaption .key { color: var(--accent); font-weight: 600; }
+  @media (max-width: 980px) {
+    .viewer-box { grid-template-columns: 264px minmax(0, 1fr); height: 264px; }
+  }
 
   /* ---------- Sections ---------- */
   .block {
@@ -363,9 +386,13 @@
     .identity { flex-direction: column; align-items: flex-start; gap: 20px; }
     .portrait { width: 104px; height: 104px; }
     .portrait span { font-size: 2rem; }
-    .monitor { margin-top: 36px; }
-    .monitor-plot { height: 200px; border-radius: 8px; }
-    .ch-label, .readout { font-size: 11px; }
+    .viewer { margin-top: 36px; }
+    .viewer-box { grid-template-columns: minmax(0, 1fr); grid-template-rows: 212px 256px; height: auto; border-radius: 10px; }
+    .mri { border-right: 0; border-bottom: 1px solid var(--v-rule); }
+    .vtag { font-size: 10.5px; }
+    .s-label, .s-out { font-size: 11px; }
+    .s-chan { font-size: 10px; }
+    .viewer figcaption .lead { font-size: 1.12rem; }
     .contact-lines li { grid-template-columns: minmax(0, 1fr); gap: 0; }
     .entry { grid-template-columns: minmax(0, 1fr); gap: 2px; }
     .projects { grid-template-columns: minmax(0, 1fr); }
@@ -375,7 +402,7 @@
   }
 
   @media print {
-    .topbar, .monitor, .theme-toggle, .skip { display: none !important; }
+    .topbar, .viewer, .theme-toggle, .skip { display: none !important; }
     .block { break-inside: avoid-page; padding: 24px 0; }
     .block > h2 { position: static; }
     a { color: inherit; }
@@ -422,7 +449,7 @@
           Lecturer, Department of Electrical and Computer Engineering,
           <a href="https://ece.northsouth.edu/people/omar-ibne-shahid/">North South University</a>, Dhaka
         </p>
-        <p class="interests">Research interests: medical AI, biomedical signal analysis, medical imaging, wearable health monitoring</p>
+        <p class="interests">Research interests: AI in healthcare, medical informatics, biomedical signal processing, explainable AI</p>
 
         <ul class="links" aria-label="Profiles and contact">
           <li><a class="primary" href="assets/Omar_Ibne_Shahid_CV.pdf">
@@ -440,11 +467,25 @@
       </div>
     </div>
 
-    <figure class="monitor" aria-labelledby="monitor-caption">
-      <div class="monitor-plot" id="monitor-plot">
-        <svg id="monitor-svg" aria-hidden="true"></svg>
+    <figure class="viewer" aria-labelledby="viewer-caption">
+      <div class="viewer-box">
+        <div class="mri">
+          <canvas id="mri-canvas" width="448" height="448" aria-hidden="true"></canvas>
+          <svg id="mri-overlay" viewBox="-1 -1 2 2" aria-hidden="true"></svg>
+          <span class="vtag tl" aria-hidden="true">Brain MRI, axial T1</span>
+          <span class="vtag bl" aria-hidden="true">Slice 42</span>
+          <span class="vtag side l" aria-hidden="true">R</span>
+          <span class="vtag side r" aria-hidden="true">L</span>
+          <span class="vtag br out" id="mri-out" aria-hidden="true"></span>
+        </div>
+        <div class="signals" id="signals">
+          <svg id="signals-svg" aria-hidden="true"></svg>
+        </div>
       </div>
-      <figcaption id="monitor-caption">An illustrative recording from a wearable monitor. <span class="key">Blue</span> marks what a model detected: heartbeats in the ECG and fetal movements in the abdominal sensor channel.</figcaption>
+      <figcaption id="viewer-caption">
+        <span class="lead">Every project I work on starts with biomedical data.</span>
+        <span class="rest">An MRI scan, an ECG or EEG recording, a wearable motion sensor: I build models that find what matters in data like this. <span class="key">Blue</span> marks what a model detected in these simulated examples: a brain lesion, heartbeats, EEG spikes and reaching movements.</span>
+      </figcaption>
     </figure>
   </section>
 
@@ -455,8 +496,9 @@
       <h2>About</h2>
       <div class="block-body prose">
         <p>I am a Lecturer in the Department of Electrical and Computer Engineering at North South University in Dhaka, Bangladesh, where I teach pattern recognition and neural networks, algorithms, and digital logic design.</p>
-        <p>My research is in medical AI: building machine learning methods that turn physiological and clinical data into information that supports diagnosis and care. I have worked on detecting fetal movement from a wearable abdominal monitor in the Wellcome Leap In Utero program, screening for autism spectrum disorder from eye-tracking data, detecting physical fatigue from wearable sensors, and recognizing activities from wearable and vision sensors for assistive healthcare. A research grant from North South University funded my recent work on mathematical modeling of human activity recognition for healthcare.</p>
-        <p>I am especially interested in biomedical signal analysis, medical imaging, and wearable health monitoring, and in making these models reliable enough to use in clinical settings.</p>
+        <p>My research is in AI for healthcare: building machine learning methods that turn biomedical data into information that supports diagnosis and care. I currently work with Dr. Brandon Oubre at the University of Alabama at Birmingham on estimating upper-limb impairment after stroke from a single wearable sensor during everyday activities.</p>
+        <p>Before that, I worked on detecting fetal movement with a wearable abdominal monitor in the Wellcome Leap In Utero program, screening for autism spectrum disorder from eye-tracking data, detecting physical fatigue from wearable sensors, and recognizing activities from wearable and vision sensors for assistive healthcare. A research grant from North South University funded my work on mathematical modeling of human activity recognition for healthcare.</p>
+        <p>I am especially interested in medical informatics, biomedical signal processing, medical image analysis, and explainable AI, so that clinicians can see why a model reached its decision.</p>
         <p>I hold an MSc in Human Factors Engineering from the University at Buffalo, The State University of New York, and a BSc in Robotics and Mechatronics Engineering from the University of Dhaka.</p>
       </div>
     </section>
@@ -469,6 +511,8 @@
         <ol>
           <li class="entry"><span class="when">2026</span>
             <div class="what"><p>Serving as a peer reviewer for ICPR 2026 and ACM COMPASS 2026.</p></div></li>
+          <li class="entry"><span class="when">May 2025</span>
+            <div class="what"><p>Began research with Dr. Brandon Oubre at the University of Alabama at Birmingham on analyzing upper-limb impairment in stroke patients.</p></div></li>
           <li class="entry"><span class="when">Jan 2025</span>
             <div class="what"><p>Became Faculty Advisor of the IEEE Robotics and Automation Society branch at North South University.</p></div></li>
           <li class="entry"><span class="when">Sep 2024</span>
@@ -495,10 +539,17 @@
 
         <h3 class="sub">Research experience</h3>
         <ol>
+          <li class="entry"><span class="when">May 2025 – present</span>
+            <div class="what">
+              <h3>Analyzing Stroke Patient Impairment</h3>
+              <p class="where">University of Alabama at Birmingham</p>
+              <p>Estimating upper-limb impairment during activities of daily living from a single wearable sensor, using the kinematics of point-to-point submovements.</p>
+              <p class="note">Supervisor: Dr. Brandon Oubre</p>
+            </div></li>
           <li class="entry"><span class="when">Mar – Dec 2023</span>
             <div class="what">
               <h3>Translation of a Wearable Fetal Movement Monitor Towards Stillbirth Prevention</h3>
-              <p class="where">Wellcome Leap In Utero, University College Dublin (hybrid)</p>
+              <p class="where">Wellcome Leap In Utero, University College Dublin (remote)</p>
               <p>Used AI-based biomedical signal analysis to extract fetal movement from raw signals recorded by a wearable device. A collaboration between Imperial College London, University College Dublin and the University of Dhaka.</p>
               <p class="note">Supervisors: Prof. Niamh C. Nowlan and Dr. Abhishek Kumar Ghosh</p>
             </div></li>
@@ -593,6 +644,30 @@
               <div class="pub-links"><a href="https://doi.org/10.1007/978-981-15-8269-1_10">Springer</a></div>
             </div></li>
         </ol>
+
+        <h3 class="sub">Under review</h3>
+        <ol>
+          <li class="entry pub"><span class="when">Submitted</span>
+            <div class="what">
+              <p class="title">Single Sensor Estimation of Upper-Limb Stroke Impairment during Activities of Daily Living using Point-to-Point Submovement Kinematic</p>
+              <p class="venue"><em>IEEE Journal of Biomedical and Health Informatics</em></p>
+            </div></li>
+          <li class="entry pub"><span class="when">Submitted</span>
+            <div class="what">
+              <p class="title">SwinBact Net: A Transformer-Based Deep Framework for Bacterial Image Segmentation</p>
+              <!-- Add the journal name here: <p class="venue"><em>Journal name</em></p> -->
+            </div></li>
+          <li class="entry pub"><span class="when">Submitted</span>
+            <div class="what">
+              <p class="title">HumP-KD: A Hybrid Uncertainty-Aware Multi-Stage Progressive Knowledge Distillation Framework for Efficient Fire Classification</p>
+              <p class="venue"><em>SN Computer Science</em></p>
+            </div></li>
+          <li class="entry pub"><span class="when">Submitted</span>
+            <div class="what">
+              <p class="title">Geometric Deformation Invariance in Data-Efficient Point Cloud Classification Using Linear Optimal Transport Subspaces</p>
+              <p class="venue"><em>Pattern Recognition Letters</em></p>
+            </div></li>
+        </ol>
       </div>
     </section>
 
@@ -605,11 +680,11 @@
             <div class="what">
               <h3>Lecturer</h3>
               <p class="where">Department of Electrical and Computer Engineering, North South University, Dhaka</p>
-              <p>Courses: Pattern Recognition and Neural Networks; Design and Analysis of Algorithms; Digital Logic Design.</p>
+              <p>Courses: Pattern Recognition and Neural Networks; Design and Analysis of Algorithms; Data Structures and Algorithms; Digital Logic Design.</p>
             </div></li>
           <li class="entry"><span class="when">Apr – Dec 2023</span>
             <div class="what">
-              <h3>Research Assistant (hybrid)</h3>
+              <h3>Research Assistant (remote)</h3>
               <p class="where">Wellcome Leap In Utero, Dublin, Ireland</p>
               <p>Biomedical signal analysis with AI to extract fetal movement from signals collected by a wearable device.</p>
             </div></li>
@@ -837,13 +912,22 @@
     document.querySelectorAll('main section[id]').forEach(function (s) { io.observe(s); });
   }
 
-  /* ---------- Medical signal figure ---------- */
-  var plot = document.getElementById('monitor-plot');
-  var svg = document.getElementById('monitor-svg');
-  if (!plot || !svg) return;
+  /* ---------- Multimodal data figure (all data simulated) ---------- */
+  var mriCanvas = document.getElementById('mri-canvas');
+  var mriOverlay = document.getElementById('mri-overlay');
+  var sigBox = document.getElementById('signals');
+  var sigSvg = document.getElementById('signals-svg');
+  if (!mriCanvas || !sigSvg) return;
   var NS = 'http://www.w3.org/2000/svg';
 
-  // Seeded random numbers, so the recording looks the same on every visit
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(NS, name);
+    for (var key in attrs) n.setAttribute(key, attrs[key]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+
+  // Seeded random numbers, so every visit shows the same data
   var seed = 1618;
   function rand() {
     seed |= 0; seed = seed + 0x6D2B79F5 | 0;
@@ -856,175 +940,380 @@
     return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
   }
   function bump(t, mu, sig) { var d = (t - mu) / sig; return Math.exp(-0.5 * d * d); }
-  function skewBump(t, mu, rise, fall) { return bump(t, mu, t < mu ? rise : fall); }
+  function smooth(e0, e1, x) { var t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); }
 
-  // ---- Synthesize 12 s of signal at 250 Hz, in seconds, independent of screen width ----
-  var FS = 250, SPAN = 12, N = FS * SPAN;
-
-  // Heartbeats (R-peak times) around 72 bpm with natural beat-to-beat variation
-  var beats = [], tb = 0.38;
-  for (var i = 0; tb < SPAN; i++) {
-    beats.push(tb);
-    tb += 0.833 + 0.028 * Math.sin(2 * Math.PI * i / 4.3) + 0.012 * gauss();
+  // 2D gradient noise: its zero lines make convincing sulci
+  var PERM = new Uint8Array(512), GX = new Float32Array(256), GY = new Float32Array(256);
+  (function () {
+    var p = [], i, j, t;
+    for (i = 0; i < 256; i++) p[i] = i;
+    for (i = 255; i > 0; i--) { j = Math.floor(rand() * (i + 1)); t = p[i]; p[i] = p[j]; p[j] = t; }
+    for (i = 0; i < 512; i++) PERM[i] = p[i & 255];
+    for (i = 0; i < 256; i++) { var a = rand() * Math.PI * 2; GX[i] = Math.cos(a); GY[i] = Math.sin(a); }
+  })();
+  function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+  function perlin(x, y) {
+    var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+    xi &= 255; yi &= 255;
+    var aa = PERM[xi + PERM[yi]], ab = PERM[xi + PERM[yi + 1]];
+    var ba = PERM[xi + 1 + PERM[yi]], bb = PERM[xi + 1 + PERM[yi + 1]];
+    var u = fade(xf), v = fade(yf);
+    var n00 = GX[aa] * xf + GY[aa] * yf, n10 = GX[ba] * (xf - 1) + GY[ba] * yf;
+    var n01 = GX[ab] * xf + GY[ab] * (yf - 1), n11 = GX[bb] * (xf - 1) + GY[bb] * (yf - 1);
+    var x1 = n00 + u * (n10 - n00), x2 = n01 + u * (n11 - n01);
+    return x1 + v * (x2 - x1);
   }
-  // Fetal movement episodes in the abdominal channel
-  var events = [
-    { s: 1.55, e: 2.75, a: 0.85, f1: 6.2, f2: 10.5 },
-    { s: 5.25, e: 6.20, a: 0.62, f1: 5.1, f2: 9.3 },
-    { s: 9.10, e: 9.90, a: 0.70, f1: 6.8, f2: 11.2 }
-  ];
 
-  var ecg = new Float32Array(N), ppg = new Float32Array(N), abd = new Float32Array(N);
-  var PTT = 0.22; // pulse transit time from heart to sensor
-  for (var k = 0; k < N; k++) {
-    var t = k / FS, e = 0, p = 0, a = 0;
-    for (var j = 0; j < beats.length; j++) {
-      var b = beats[j];
-      if (b < t - 1.2 || b > t + 0.4) continue;
-      e += 0.11 * bump(t, b - 0.20, 0.025) - 0.10 * bump(t, b - 0.035, 0.010)
-         + 1.00 * bump(t, b, 0.011) - 0.22 * bump(t, b + 0.03, 0.011)
-         + 0.28 * bump(t, b + 0.27, 0.045);
-      p += 1.0 * skewBump(t, b + PTT + 0.13, 0.055, 0.12) + 0.33 * bump(t, b + PTT + 0.40, 0.075);
-      a += 0.05 * bump(t, b + 0.05, 0.03); // faint maternal heartbeat artifact
+  /* ===== Brain MRI: an axial T1 slice with a ring-enhancing lesion ===== */
+  var RX = 0.74, RY = 0.9;                       // head half-width and half-length
+  var LES = { u: -0.40, v: -0.07, r: 0.105 };     // lesion in the patient's right hemisphere
+  var MM_PER_UNIT = 100;                          // 200 mm field of view across the image
+  function lesionRadius(phi) {
+    return LES.r * (1 + 0.12 * Math.sin(3 * phi + 1.0) + 0.07 * Math.sin(5 * phi + 2.2)
+      + 0.05 * perlin(Math.cos(phi) * 2.5 + 11, Math.sin(phi) * 2.5 + 2));
+  }
+  // Lateral ventricles as tapered tubes: [u, v, radius]
+  var VENT = [[0.046, -0.25, 0.018], [0.072, -0.19, 0.028], [0.093, -0.10, 0.022], [0.104, 0.0, 0.018],
+              [0.102, 0.09, 0.019], [0.093, 0.17, 0.025], [0.076, 0.23, 0.016]];
+  function inVentricle(u, v) {
+    var au = Math.abs(u);
+    for (var i = 0; i < VENT.length - 1; i++) {
+      var a = VENT[i], b = VENT[i + 1];
+      var dx = b[0] - a[0], dy = b[1] - a[1];
+      var t = ((au - a[0]) * dx + (v - a[1]) * dy) / (dx * dx + dy * dy);
+      t = Math.max(0, Math.min(1, t));
+      var px = a[0] + t * dx - au, py = a[1] + t * dy - v;
+      var r = a[2] + t * (b[2] - a[2]);
+      if (px * px + py * py < r * r) return true;
     }
-    e += 0.03 * Math.sin(2 * Math.PI * t / 3.7) + 0.006 * gauss();
-    p += 0.06 * Math.sin(2 * Math.PI * t / 4.1) + 0.004 * gauss();
-    a += 0.14 * Math.sin(2 * Math.PI * t / 3.9 + 0.7) + 0.025 * gauss(); // maternal breathing + noise
-    for (var m = 0; m < events.length; m++) {
-      var ev = events[m];
-      if (t > ev.s && t < ev.e) {
-        var w = Math.sin(Math.PI * (t - ev.s) / (ev.e - ev.s));
-        a += ev.a * w * w * (0.65 * Math.sin(2 * Math.PI * ev.f1 * t) + 0.35 * Math.sin(2 * Math.PI * ev.f2 * t + 1.3)) * (0.8 + 0.4 * rand());
+    return false;
+  }
+
+  function mriValue(u, v) {
+    var q = Math.sqrt((u / RX) * (u / RX) + (v / RY) * (v / RY));
+    var th = Math.atan2(v, u);
+    q *= 1 + 0.012 * perlin(Math.cos(th) * 2 + 7, Math.sin(th) * 2 + 7);
+    if (q > 1) return 0;                                                  // air
+    if (q > 0.968) return 0.42 + 0.44 * smooth(1, 0.975, q);              // skin, then fat (bright on T1)
+    if (q > 0.935) return 0.05 + 0.26 * bump(q, 0.951, 0.0045);           // skull with marrow line
+    if (q > 0.918) return 0.09;                                           // CSF around the brain
+
+    var depth = 0.918 - q, I;
+    // Folded cortex: sulci run inward from the surface, so build the noise in (angle, depth)
+    var wth = th + 0.10 * perlin(u * 2.6 + 3.1, v * 2.6 + 1.7);
+    var wd = depth + 0.025 * perlin(u * 4 + 8.3, v * 4 + 5.9);
+    var n = perlin(wth * 6.2, wd * 6 + 20);
+    var seam = smooth(Math.PI - 0.35, Math.PI, Math.abs(wth));            // hide the seam at +/- pi
+    if (seam > 0) n = n * (1 - seam / 2) + perlin((wth - (wth > 0 ? 2 : -2) * Math.PI) * 6.2, wd * 6 + 20) * (seam / 2);
+    n = Math.abs(n);
+    var reach = 0.13 + 0.12 * (perlin(Math.cos(th) * 3 + 1, Math.sin(th) * 3 + 6) + 0.5);   // depth of each sulcus
+    var sulcus = 0.075 * (1 - smooth(reach * 0.55, reach, depth));
+    var ribbon = 0.13 * (1 - smooth(reach * 0.9, reach + 0.06, depth));
+    if (depth < 0.006) I = 0.11 + 0.39 * smooth(0, 0.006, depth);
+    else if (n < sulcus) I = 0.12;
+    else if (n < sulcus + ribbon || depth < 0.022) I = 0.50;
+    else I = 0.74 * (1 + 0.04 * perlin(u * 5 + 60, v * 5 + 60));
+
+    // Midline fissure between the hemispheres, lined with cortex
+    var mid = u - 0.012 * perlin(v * 3, 4.2);
+    if (v < -0.34 || v > 0.47) {
+      if (Math.abs(mid) < 0.009) I = 0.12;
+      else if (Math.abs(mid) < 0.03 && I > 0.55) I = 0.50;
+    }
+    // Caudate heads beside the frontal horns
+    var cu = (Math.abs(u) - 0.152) / 0.046, cv = (v + 0.2) / 0.075;
+    if (cu * cu + cv * cv < 1) I = 0.57;
+    if (inVentricle(u, v)) I = 0.13;
+
+    // Lesion: dark necrotic core, bright enhancing rim, darker edema around it
+    var du = u - LES.u, dv = v - LES.v, dist = Math.sqrt(du * du + dv * dv);
+    if (dist < LES.r * 2.1) {
+      var phi = Math.atan2(dv, du), dl = dist / lesionRadius(phi);
+      if (dl < 1) {
+        var w = 0.10 + 0.035 * perlin(Math.cos(phi) * 3 + 5, Math.sin(phi) * 3 + 9);
+        I = 0.15 + 0.8 * Math.exp(-Math.pow((dl - 0.8) / w, 2)) + 0.05 * perlin(u * 40, v * 40);
+      } else if (dl < 1.8) {
+        I *= 0.78 + 0.22 * smooth(1, 1.8, dl);
       }
     }
-    ecg[k] = e; ppg[k] = p; abd[k] = a;
+    I *= 1 + 0.05 * perlin(u * 22 + 40, v * 22 + 40);                    // tissue texture
+    return I;
   }
-  var abdMax = 0;
-  for (k = 0; k < N; k++) abdMax = Math.max(abdMax, Math.abs(abd[k]));
 
-  var channels = [
-    { label: 'ECG', data: ecg, share: 0.42, lo: -0.32, hi: 1.08 },
-    { label: 'Pulse (PPG)', data: ppg, share: 0.26, lo: -0.12, hi: 1.22 },
-    { label: 'Abdominal sensor', data: abd, share: 0.32, lo: -abdMax * 1.04, hi: abdMax * 1.04 }
+  var N = mriCanvas.width, mctx = mriCanvas.getContext('2d'), mriImage = null;
+  function buildMRI() {
+    var F = new Float32Array(N * N), x, y, k, u, v, val;
+    for (y = 0; y < N; y++) {
+      v = (y + 0.5) / N * 2 - 1;
+      for (x = 0; x < N; x++) {
+        u = (x + 0.5) / N * 2 - 1;
+        val = mriValue(u, v) * (1 + 0.07 * (-0.6 * v + 0.25 * u));        // coil inhomogeneity
+        var a = val + 0.026 * gauss(), b = 0.026 * gauss();
+        F[y * N + x] = Math.sqrt(a * a + b * b);                          // Rician noise, like real magnitude images
+      }
+    }
+    // Soften with two passes of a [1 2 1] blur in both directions
+    var T = new Float32Array(N * N), pass;
+    for (pass = 0; pass < 2; pass++) {
+      for (y = 0; y < N; y++) for (x = 0; x < N; x++) {
+        k = y * N + x;
+        T[k] = (F[k - (x > 0 ? 1 : 0)] + 2 * F[k] + F[k + (x < N - 1 ? 1 : 0)]) / 4;
+      }
+      for (y = 0; y < N; y++) for (x = 0; x < N; x++) {
+        k = y * N + x;
+        F[k] = (T[k - (y > 0 ? N : 0)] + 2 * T[k] + T[k + (y < N - 1 ? N : 0)]) / 4;
+      }
+    }
+    var img = mctx.createImageData(N, N), d = img.data;
+    for (y = 0; y < N; y++) for (x = 0; x < N; x++) {
+      k = y * N + x;
+      val = F[k];
+      var g = Math.round(255 * Math.pow(Math.min(1, Math.max(0, val)), 0.95));
+      d[k * 4] = d[k * 4 + 1] = d[k * 4 + 2] = g; d[k * 4 + 3] = 255;
+    }
+    mriImage = document.createElement('canvas');
+    mriImage.width = mriImage.height = N;
+    mriImage.getContext('2d').putImageData(img, 0, 0);
+  }
+
+  // Segmentation outline (the model's output) and its area
+  var segPath = el('path', { 'class': 'seg' }, mriOverlay);
+  var scanLine = el('line', { x1: -1, x2: 1, y1: -1, y2: -1, 'class': 'scan', visibility: 'hidden' }, mriOverlay);
+  var mriOut = document.getElementById('mri-out');
+  (function () {
+    var pts = [], d = '', area = 0, i;
+    for (i = 0; i < 160; i++) {
+      var phi = i / 160 * Math.PI * 2, r = lesionRadius(phi) * 1.07;
+      pts.push([LES.u + r * Math.cos(phi), LES.v + r * Math.sin(phi)]);
+    }
+    for (i = 0; i < pts.length; i++) {
+      var a = pts[i], b = pts[(i + 1) % pts.length];
+      area += a[0] * b[1] - b[0] * a[1];
+      d += (i ? 'L' : 'M') + a[0].toFixed(4) + ' ' + a[1].toFixed(4);
+    }
+    segPath.setAttribute('d', d + 'Z');
+    var cm2 = Math.abs(area) / 2 * MM_PER_UNIT * MM_PER_UNIT / 100;
+    mriOut.textContent = 'Lesion ' + cm2.toFixed(1) + ' cm²';
+  })();
+
+  function showMRI(p) {
+    if (!mriImage) return;
+    var rows = Math.round(p * N);
+    mctx.clearRect(0, 0, N, N);
+    if (rows > 0) mctx.drawImage(mriImage, 0, 0, N, rows, 0, 0, N, rows);
+    var y = -1 + 2 * p;
+    scanLine.setAttribute('y1', y); scanLine.setAttribute('y2', y);
+    scanLine.setAttribute('visibility', p > 0 && p < 1 ? 'visible' : 'hidden');
+  }
+
+  /* ===== Signals: 12 s at 250 Hz, defined in seconds so every width shows the same recording ===== */
+  var FS = 250, SPAN = 12, NS_ = FS * SPAN, k, t, j;
+
+  // ECG around 72 bpm with natural beat-to-beat variation
+  var beats = [], tb = 0.38;
+  for (var i = 0; tb < SPAN; i++) { beats.push(tb); tb += 0.833 + 0.028 * Math.sin(2 * Math.PI * i / 4.3) + 0.012 * gauss(); }
+  var ecg = new Float32Array(NS_);
+  for (k = 0; k < NS_; k++) {
+    t = k / FS; var e = 0;
+    for (j = 0; j < beats.length; j++) {
+      var b = beats[j];
+      if (b < t - 0.6 || b > t + 0.4) continue;
+      e += 0.11 * bump(t, b - 0.20, 0.025) - 0.10 * bump(t, b - 0.035, 0.010) + 1.00 * bump(t, b, 0.011)
+         - 0.22 * bump(t, b + 0.03, 0.011) + 0.28 * bump(t, b + 0.27, 0.045);
+    }
+    ecg[k] = e + 0.03 * Math.sin(2 * Math.PI * t / 3.7) + 0.006 * gauss();
+  }
+
+  // EEG: 1/f background, occipital alpha, and spike-and-wave discharges
+  var EEG_NAMES = ['Fp1', 'C3', 'O1'], ALPHA_W = [0.25, 0.55, 1.0], SPIKE_W = [0.75, 1.0, 0.6];
+  var SPIKES = [1.45, 3.95, 7.4];
+  var eeg = EEG_NAMES.map(function (name, c) {
+    var comps = [], f, x = new Float32Array(NS_), sd = 0, ph = rand() * 6.28;
+    for (f = 1; f <= 30; f += 0.5) comps.push([f, Math.pow(f, -0.85), rand() * 6.28]);
+    for (k = 0; k < NS_; k++) {
+      t = k / FS; var s = 0;
+      for (j = 0; j < comps.length; j++) s += comps[j][1] * Math.sin(2 * Math.PI * comps[j][0] * t + comps[j][2]);
+      x[k] = s; sd += s * s;
+    }
+    sd = Math.sqrt(sd / NS_);
+    for (k = 0; k < NS_; k++) {
+      t = k / FS;
+      var env = 0.5 + 0.5 * Math.sin(2 * Math.PI * t / 3.3 + c * 1.7);
+      var v = 0.4 * x[k] / sd + ALPHA_W[c] * 0.55 * env * Math.sin(2 * Math.PI * 10.1 * t + ph);
+      for (j = 0; j < SPIKES.length; j++) {
+        for (var r = 0; r < 2; r++) {
+          var T0 = SPIKES[j] + r * 0.33;
+          if (t < T0 - 0.1 || t > T0 + 0.45) continue;
+          v += SPIKE_W[c] * (1.9 * bump(t, T0, 0.011) - 0.7 * bump(t, T0 + 0.028, 0.016) - 1.0 * bump(t, T0 + 0.17, 0.065));
+        }
+      }
+      x[k] = v + 0.03 * gauss();
+    }
+    return x;
+  });
+
+  // Wrist accelerometer (x, y, z in g) during reaching movements with a corrective submovement
+  var REACHES = [{ s: 0.55, d: 0.95 }, { s: 2.5, d: 0.9 }, { s: 4.3, d: 0.8 }, { s: 7.0, d: 0.9 }];
+  var REST = [0.12, -0.20, 0.96], OUT = [0.52, -0.06, 0.80], AXIS = [1.0, 0.45, -0.35];
+  var acc = [new Float32Array(NS_), new Float32Array(NS_), new Float32Array(NS_)];
+  function minJerkAcc(tau) { return tau <= 0 || tau >= 1 ? 0 : (60 * tau - 180 * tau * tau + 120 * tau * tau * tau) / 5.77; }
+  function minJerkPos(tau) { tau = Math.max(0, Math.min(1, tau)); return tau * tau * tau * (10 - 15 * tau + 6 * tau * tau); }
+  for (k = 0; k < NS_; k++) {
+    t = k / FS;
+    var level = 0, a = 0;
+    for (j = 0; j < REACHES.length; j++) {
+      var R = REACHES[j], dir = j % 2 ? -1 : 1, tau = (t - R.s) / R.d;
+      level += dir * minJerkPos(tau);
+      a += dir * (0.45 * minJerkAcc(tau) + 0.12 * minJerkAcc((t - R.s - R.d + 0.05) / 0.3));
+    }
+    for (var ax = 0; ax < 3; ax++) {
+      acc[ax][k] = REST[ax] + (OUT[ax] - REST[ax]) * level + AXIS[ax] * a
+        + 0.01 * Math.sin(2 * Math.PI * 9 * t + ax) + 0.015 * gauss();
+    }
+  }
+
+  function range(arrs, pad) {
+    var lo = Infinity, hi = -Infinity;
+    arrs.forEach(function (a) { for (var q = 0; q < a.length; q++) { if (a[q] < lo) lo = a[q]; if (a[q] > hi) hi = a[q]; } });
+    var m = (hi - lo) * pad;
+    return [lo - m, hi + m];
+  }
+  var GROUPS = [
+    { label: 'ECG', share: 0.25, tracks: [{ series: [ecg], range: range([ecg], 0.04) }] },
+    { label: 'EEG', share: 0.45, tracks: eeg.map(function (x, c) { return { name: EEG_NAMES[c], series: [x], thin: true, range: range([x], 0.02) }; }),
+      events: SPIKES.map(function (s) { return { s: s - 0.08, e: s + 0.62 }; }), unit: ['spike event', 'spike events'] },
+    { label: 'Wrist accelerometer', share: 0.30, tracks: [{ series: acc, opacity: [1, 0.62, 0.38], range: range(acc, 0.04) }],
+      events: REACHES.map(function (r) { return { s: r.s - 0.05, e: r.s + r.d + 0.3 }; }), unit: ['reach', 'reaches'] }
   ];
 
-  function el(name, attrs, parent) {
-    var n = document.createElementNS(NS, name);
-    for (var key in attrs) n.setAttribute(key, attrs[key]);
-    if (parent) parent.appendChild(n);
-    return n;
-  }
+  var sig = null, lastW = 0, animDone = false;
 
-  var state = null, lastW = 0;
-
-  function render(animate) {
-    var W = Math.round(plot.clientWidth), H = Math.round(plot.clientHeight);
+  function renderSignals() {
+    var W = Math.round(sigBox.clientWidth), H = Math.round(sigBox.clientHeight);
     if (!W || !H) return;
     lastW = W;
-    while (svg.firstChild) svg.removeChild(svg.firstChild);
-    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    while (sigSvg.firstChild) sigSvg.removeChild(sigSvg.firstChild);
+    sigSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
 
-    var narrow = W < 640;
-    var pxs = narrow ? W / 4 : 130;      // pixels per second
-    var dur = W / pxs;                   // seconds shown
-    var labelRow = narrow ? 20 : 23;
+    var narrow = W < 520, x0 = narrow ? 34 : 40;
+    var pxs = narrow ? (W - x0) / 4 : 130, dur = (W - x0) / pxs, labelRow = narrow ? 20 : 22;
+    var last = Math.min(NS_ - 1, Math.floor(dur * FS));
 
-    // ECG paper: small squares are 0.04 s, large squares 0.2 s
-    var minor = 0.04 * pxs, major = 5 * minor, dMin = '', dMaj = '', x, y, n;
-    for (n = 0, x = 0.5; x <= W; n++, x = 0.5 + n * minor) { if (n % 5) dMin += 'M' + x.toFixed(1) + ' 0V' + H; else dMaj += 'M' + x.toFixed(1) + ' 0V' + H; }
-    for (n = 0, y = 0.5; y <= H; n++, y = 0.5 + n * minor) { if (n % 5) dMin += 'M0 ' + y.toFixed(1) + 'H' + W; else dMaj += 'M0 ' + y.toFixed(1) + 'H' + W; }
-    if (minor >= 4.5) el('path', { d: dMin, 'class': 'grid-minor' }, svg);
-    el('path', { d: dMaj, 'class': 'grid-major' }, svg);
+    // Time grid: thin lines every 0.2 s, stronger every second
+    var g1 = '', g2 = '';
+    for (var n = 0; x0 + n * 0.2 * pxs <= W; n++) {
+      var gx = (Math.round(x0 + n * 0.2 * pxs) + 0.5).toFixed(1);
+      if (n % 5) g1 += 'M' + gx + ' 0V' + H; else g2 += 'M' + gx + ' 0V' + H;
+    }
+    el('path', { d: g1, 'class': 's-grid' }, sigSvg);
+    el('path', { d: g2, 'class': 's-grid2' }, sigSvg);
 
-    var defs = el('defs', {}, svg);
-    var clip = el('clipPath', { id: 'sweep-clip' }, defs);
-    var clipRect = el('rect', { x: 0, y: 0, width: animate ? 0 : W, height: H }, clip);
-    var revealed = el('g', { 'clip-path': 'url(#sweep-clip)' }, svg);
+    var defs = el('defs', {}, sigSvg);
+    var clip = el('clipPath', { id: 'signals-clip' }, defs);
+    var clipRect = el('rect', { x: x0, y: 0, width: 0, height: H }, clip);
+    var layer = el('g', { 'clip-path': 'url(#signals-clip)' }, sigSvg);
 
-    var top = 0, peaks = [], readouts = [];
-    var last = Math.min(N - 1, Math.floor(dur * FS));
-    channels.forEach(function (ch, ci) {
-      var h = Math.round(H * ch.share);
-      if (ci === channels.length - 1) h = H - top;
-      var y0 = top + labelRow, y1 = top + h - 7;
-      var yOf = function (v) { return y1 - (v - ch.lo) / (ch.hi - ch.lo) * (y1 - y0); };
-      ch.top = top; ch.h = h; ch.yOf = yOf;
-      if (ci) el('line', { x1: 0, x2: W, y1: top + 0.5, y2: top + 0.5, 'class': 'sep' }, svg);
+    var top = 0, outs = [], peaks = [], labels = [];
+    GROUPS.forEach(function (gr, gi) {
+      var h = gi === GROUPS.length - 1 ? H - top : Math.round(H * gr.share);
+      var y0 = top + labelRow, y1 = top + h - 5, trackH = (y1 - y0) / gr.tracks.length;
+      if (gi) el('line', { x1: 0, x2: W, y1: top + 0.5, y2: top + 0.5, 'class': 's-sep' }, sigSvg);
 
-      // Fetal movement detections sit behind the abdominal trace
-      if (ch.data === abd) {
+      if (gr.events) {
         var found = 0;
-        events.forEach(function (ev) {
-          if (ev.e > dur - 0.05) return;
+        gr.events.forEach(function (ev) {
+          if (ev.e > dur - 0.03) return;
           found++;
-          el('rect', { x: ev.s * pxs, y: top + 1, width: (ev.e - ev.s) * pxs, height: h - 2, 'class': 'band' }, revealed);
-          el('rect', { x: ev.s * pxs, y: top + labelRow - 5, width: (ev.e - ev.s) * pxs, height: 2, 'class': 'band-bar' }, revealed);
+          var bx = x0 + ev.s * pxs, bw = (ev.e - ev.s) * pxs;
+          el('rect', { x: bx, y: top + 1, width: bw, height: h - 2, 'class': 's-band' }, layer);
+          el('rect', { x: bx, y: top + 1, width: bw, height: 2, 'class': 's-bar' }, layer);
         });
-        ch.readout = found + (found === 1 ? ' fetal movement' : ' fetal movements');
+        gr.readout = found + ' ' + gr.unit[found === 1 ? 0 : 1];
       }
 
-      var d = '';
-      for (var k = 0; k <= last; k++) d += (k ? 'L' : 'M') + (k / FS * pxs).toFixed(1) + ' ' + yOf(ch.data[k]).toFixed(1);
-      el('path', { d: d, 'class': 'sig' }, revealed);
+      gr.tracks.forEach(function (tr, ti) {
+        var ta = y0 + ti * trackH, tz = ta + trackH;
+        var yOf = function (val) { return tz - (val - tr.range[0]) / (tr.range[1] - tr.range[0]) * (tz - ta); };
+        tr.yOf = yOf;
+        tr.series.forEach(function (arr, si) {
+          var d = '';
+          for (var q = 0; q <= last; q++) d += (q ? 'L' : 'M') + (x0 + q / FS * pxs).toFixed(1) + ' ' + yOf(arr[q]).toFixed(1);
+          var attrs = { d: d, 'class': 's-sig' + (tr.thin ? ' thin' : '') };
+          if (tr.opacity) attrs['stroke-opacity'] = tr.opacity[si];
+          el('path', attrs, layer);
+        });
+        if (tr.name) labels.push({ text: tr.name, y: (ta + tz) / 2, cls: 's-chan' });
+      });
+      gr.top = top;
       top += h;
     });
 
     // Detected heartbeats and heart rate
-    var ecgCh = channels[0], shown = [];
+    var ecgTrack = GROUPS[0].tracks[0], shown = [];
     beats.forEach(function (b) {
       if (b > dur - 0.02) return;
       shown.push(b);
-      var c = el('circle', { cx: (b * pxs).toFixed(1), cy: ecgCh.yOf(ecg[Math.round(b * FS)]).toFixed(1), r: narrow ? 2.3 : 2.7, 'class': 'peak' }, svg);
-      peaks.push({ x: b * pxs, node: c });
+      var c = el('circle', { cx: (x0 + b * pxs).toFixed(1), cy: ecgTrack.yOf(ecg[Math.round(b * FS)]).toFixed(1), r: narrow ? 2.2 : 2.6, 'class': 's-peak' }, sigSvg);
+      peaks.push({ x: x0 + b * pxs, node: c });
     });
     var rr = (shown[shown.length - 1] - shown[0]) / (shown.length - 1);
-    ecgCh.readout = Math.round(60 / rr) + ' bpm';
+    GROUPS[0].readout = Math.round(60 / rr) + ' bpm';
 
-    channels.forEach(function (ch) {
-      el('text', { x: 8, y: ch.top + 15, 'class': 'ch-label' }, svg).textContent = ch.label;
-      if (ch.readout) {
-        var r = el('text', { x: W - 8, y: ch.top + 15, 'text-anchor': 'end', 'class': 'readout' }, svg);
-        r.textContent = ch.readout;
-        readouts.push(r);
-      }
+    GROUPS.forEach(function (gr) {
+      el('text', { x: 8, y: gr.top + 15, 'class': 's-label' }, sigSvg).textContent = gr.label;
+      var o = el('text', { x: W - 8, y: gr.top + 15, 'text-anchor': 'end', 'class': 's-out' }, sigSvg);
+      o.textContent = gr.readout;
+      outs.push(o);
+    });
+    labels.forEach(function (lb) {
+      el('text', { x: 8, y: lb.y, 'dominant-baseline': 'middle', 'class': lb.cls }, sigSvg).textContent = lb.text;
     });
 
-    state = { W: W, H: H, clipRect: clipRect, peaks: peaks, readouts: readouts };
-    if (!animate) {
-      peaks.forEach(function (p) { p.node.classList.add('on'); });
-      readouts.forEach(function (r) { r.classList.add('on'); });
-      return;
-    }
-    sweep();
+    var sweep = el('line', { x1: x0, x2: x0, y1: 0, y2: H, 'class': 's-sweep', visibility: 'hidden' }, sigSvg);
+    sig = { W: W, x0: x0, clipRect: clipRect, peaks: peaks, outs: outs, sweep: sweep };
+    if (animDone) showSignals(1, true);
   }
 
-  function sweep() {
-    var st = state, line = el('line', { x1: 0, x2: 0, y1: 0, y2: st.H, 'class': 'sweep' }, svg);
-    var dur = 2800, t0 = null;
-    function frame(ts) {
-      if (state !== st) return;            // a resize re-rendered the figure
-      if (t0 === null) t0 = ts;
-      var p = Math.min(1, (ts - t0) / dur);
-      var x = p * (st.W + 2);              // constant speed, like a monitor sweep
-      st.clipRect.setAttribute('width', x);
-      line.setAttribute('x1', x); line.setAttribute('x2', x);
-      st.peaks.forEach(function (pk) { if (pk.x <= x) pk.node.classList.add('on'); });
-      if (p < 1) { requestAnimationFrame(frame); return; }
-      line.remove();
-      st.readouts.forEach(function (r) { r.classList.add('on'); });
-    }
-    // Start once the page has settled
-    setTimeout(function () { requestAnimationFrame(frame); }, 250);
+  function showSignals(p, final) {
+    if (!sig) return;
+    var x = sig.x0 + p * (sig.W - sig.x0 + 2);
+    sig.clipRect.setAttribute('width', Math.max(0, x - sig.x0));
+    sig.sweep.setAttribute('x1', x); sig.sweep.setAttribute('x2', x);
+    sig.sweep.setAttribute('visibility', final ? 'hidden' : 'visible');
+    sig.peaks.forEach(function (pk) { if (pk.x <= x) pk.node.classList.add('on'); });
+    if (final) sig.outs.forEach(function (o) { o.classList.add('on'); });
+  }
+
+  function finish() {
+    animDone = true;
+    showMRI(1);
+    showSignals(1, true);
+    segPath.classList.add('on');
+    mriOut.classList.add('on');
   }
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  render(!reduce);
+  renderSignals();
+  // Build the MRI just after first paint, then scan the image and sweep the signals together
+  setTimeout(function () {
+    buildMRI();
+    if (reduce) { finish(); return; }
+    var DUR = 2800, t0 = null;
+    function frame(ts) {
+      if (t0 === null) t0 = ts;
+      var p = Math.min(1, (ts - t0) / DUR);
+      showMRI(p);
+      showSignals(p, false);
+      if (p < 1) requestAnimationFrame(frame); else finish();
+    }
+    requestAnimationFrame(frame);
+  }, 120);
 
   var timer;
   window.addEventListener('resize', function () {
     clearTimeout(timer);
     timer = setTimeout(function () {
-      if (Math.abs(Math.round(plot.clientWidth) - lastW) > 1) render(false);
+      if (Math.abs(Math.round(sigBox.clientWidth) - lastW) > 1) renderSignals();
     }, 150);
   });
 })();
