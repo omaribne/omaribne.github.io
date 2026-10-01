@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Omar Ibne Shahid</title>
-<meta name="description" content="Omar Ibne Shahid is a Lecturer in Electrical and Computer Engineering at North South University, Dhaka, working on AI security, pattern recognition and mathematical modeling.">
+<meta name="description" content="Omar Ibne Shahid is a Lecturer in Electrical and Computer Engineering at North South University, Dhaka, working on medical AI: biomedical signal analysis, medical imaging and wearable health monitoring.">
 <meta name="author" content="Omar Ibne Shahid">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Omar Ibne Shahid">
-<meta property="og:description" content="Lecturer, ECE, North South University. Research in AI security, pattern recognition and mathematical modeling.">
+<meta property="og:description" content="Lecturer, ECE, North South University. Research in medical AI, biomedical signal analysis and wearable health monitoring.">
 <meta name="theme-color" content="#FBFCFC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111820" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F5FA8'/%3E%3Cpath d='M8 38 L16 38 L20 24 L26 48 L32 16 L38 44 L42 32 L56 32' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F5FA8'/%3E%3Cpath d='M6 36 H17 L20 31 L23 36 H26 L30 13 L35 49 L38 36 H43 Q47 28 51 36 H58' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 
 <script>
   (function () {
@@ -37,7 +37,7 @@
     { "@type": "CollegeOrUniversity", "name": "University of Dhaka" }
   ],
   "email": "mailto:omarshahid232@ieee.org",
-  "knowsAbout": ["AI security", "Pattern recognition", "Mathematical modeling", "Human activity recognition"],
+  "knowsAbout": ["Medical AI", "Biomedical signal processing", "Medical imaging", "Wearable health monitoring", "Pattern recognition"],
   "sameAs": [
     "https://scholar.google.com/citations?user=9KqsI5gAAAAJ&hl=en",
     "https://www.linkedin.com/in/omarshd/",
@@ -58,14 +58,12 @@
     --accent-hover: #174C87;
     --on-accent: #FFFFFF;
 
-    /* Activity colours, taken from the palette most research plots use */
-    --c1: #1F77B4;
-    --c2: #FF7F0E;
-    --c3: #2CA02C;
-    --c4: #9467BD;
-    --c5: #D62728;
-    --band-alpha: 0.11;
-    --trace: #18212B;
+    /* Medical signal figure: ECG-paper grid, raw signal in ink, model output in accent blue */
+    --grid-minor: rgba(205, 92, 106, 0.11);
+    --grid-major: rgba(205, 92, 106, 0.24);
+    --signal: #18212B;
+    --detect: #1F5FA8;
+    --detect-alpha: 0.12;
 
     --sans: "Bricolage Grotesque", "Segoe UI", system-ui, -apple-system, sans-serif;
     --serif: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
@@ -85,8 +83,11 @@
       --accent: #7EB3EE;
       --accent-hover: #A5CBF4;
       --on-accent: #0E1620;
-      --band-alpha: 0.2;
-      --trace: #D5DDE6;
+      --grid-minor: rgba(236, 132, 146, 0.08);
+      --grid-major: rgba(236, 132, 146, 0.18);
+      --signal: #D5DDE6;
+      --detect: #7EB3EE;
+      --detect-alpha: 0.2;
       color-scheme: dark;
     }
   }
@@ -99,8 +100,11 @@
     --accent: #7EB3EE;
     --accent-hover: #A5CBF4;
     --on-accent: #0E1620;
-    --band-alpha: 0.2;
-    --trace: #D5DDE6;
+    --grid-minor: rgba(236, 132, 146, 0.08);
+    --grid-major: rgba(236, 132, 146, 0.18);
+    --signal: #D5DDE6;
+    --detect: #7EB3EE;
+    --detect-alpha: 0.2;
     color-scheme: dark;
   }
 
@@ -219,36 +223,39 @@
   .links a[href=""] { display: none; }
   .links li:has(> a[href=""]) { display: none; }
 
-  /* ---------- Signal trace ---------- */
-  .trace { margin: 48px 0 0; display: none; }
-  .js .trace { display: block; }
-  .trace-plot {
-    position: relative; height: 150px;
-    border-bottom: 1px solid var(--rule);
+  /* ---------- Medical signal figure ---------- */
+  .monitor { margin: 48px 0 0; display: none; }
+  .js .monitor { display: block; }
+  .monitor-plot {
+    position: relative; height: 232px;
+    border: 1px solid var(--rule); border-radius: 10px; overflow: hidden;
+    background: var(--bg);
   }
-  .trace-plot svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; }
-  .band { fill-opacity: var(--band-alpha); }
-  .band.b1 { fill: var(--c1); } .band.b2 { fill: var(--c2); } .band.b3 { fill: var(--c3); }
-  .band.b4 { fill: var(--c4); } .band.b5 { fill: var(--c5); }
-  .trace-line {
-    fill: none; stroke: var(--trace); stroke-width: 1.3;
-    stroke-linejoin: round; vector-effect: non-scaling-stroke;
+  .monitor-plot svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .grid-minor, .grid-major { fill: none; stroke-width: 1; shape-rendering: crispEdges; }
+  .grid-minor { stroke: var(--grid-minor); }
+  .grid-major { stroke: var(--grid-major); }
+  .sep { stroke: var(--rule); stroke-width: 1; shape-rendering: crispEdges; }
+  .sig {
+    fill: none; stroke: var(--signal); stroke-width: 1.4;
+    stroke-linejoin: round; stroke-linecap: round;
   }
-  .trace-labels { position: absolute; inset: 0; pointer-events: none; }
-  .trace-labels span {
-    position: absolute; top: 8px; padding-left: 9px;
-    font-family: var(--sans); font-size: 0.8rem; font-weight: 500;
-    white-space: nowrap; opacity: 0; transition: opacity .35s ease;
+  .band { fill: var(--detect); fill-opacity: var(--detect-alpha); }
+  .band-bar { fill: var(--detect); }
+  .peak { fill: var(--detect); opacity: 0; transition: opacity .25s ease; }
+  .peak.on { opacity: 1; }
+  .sweep { stroke: var(--detect); stroke-width: 1.5; opacity: .5; }
+  .ch-label, .readout { font-family: var(--sans); font-size: 12.5px; }
+  .ch-label { font-weight: 500; fill: var(--muted); }
+  .readout {
+    font-weight: 600; fill: var(--detect); font-variant-numeric: tabular-nums;
+    opacity: 0; transition: opacity .4s ease;
   }
-  .trace-labels span.on { opacity: 1; }
-  .trace-labels .b1 { color: color-mix(in srgb, var(--c1) 72%, var(--ink)); }
-  .trace-labels .b2 { color: color-mix(in srgb, var(--c2) 70%, var(--ink)); }
-  .trace-labels .b3 { color: color-mix(in srgb, var(--c3) 72%, var(--ink)); }
-  .trace-labels .b4 { color: color-mix(in srgb, var(--c4) 72%, var(--ink)); }
-  .trace-labels .b5 { color: color-mix(in srgb, var(--c5) 72%, var(--ink)); }
-  .trace figcaption {
+  .readout.on { opacity: 1; }
+  .monitor figcaption {
     margin-top: 10px; font-size: 0.95rem; color: var(--muted); font-style: italic;
   }
+  .monitor figcaption .key { color: var(--detect); font-style: normal; font-weight: 600; }
 
   /* ---------- Sections ---------- */
   .block {
@@ -356,10 +363,9 @@
     .identity { flex-direction: column; align-items: flex-start; gap: 20px; }
     .portrait { width: 104px; height: 104px; }
     .portrait span { font-size: 2rem; }
-    .trace { margin-top: 36px; }
-    .trace-plot { height: 118px; }
-    .trace-labels span { font-size: 0.72rem; padding-left: 5px; }
-    .trace-labels span:nth-child(even) { top: 26px; }
+    .monitor { margin-top: 36px; }
+    .monitor-plot { height: 200px; border-radius: 8px; }
+    .ch-label, .readout { font-size: 11px; }
     .contact-lines li { grid-template-columns: minmax(0, 1fr); gap: 0; }
     .entry { grid-template-columns: minmax(0, 1fr); gap: 2px; }
     .projects { grid-template-columns: minmax(0, 1fr); }
@@ -369,7 +375,7 @@
   }
 
   @media print {
-    .topbar, .trace, .theme-toggle, .skip { display: none !important; }
+    .topbar, .monitor, .theme-toggle, .skip { display: none !important; }
     .block { break-inside: avoid-page; padding: 24px 0; }
     .block > h2 { position: static; }
     a { color: inherit; }
@@ -414,9 +420,9 @@
         <h1>Omar Ibne Shahid</h1>
         <p class="roles">
           Lecturer, Department of Electrical and Computer Engineering,
-          <a href="https://ece.northsouth.edu/people/omar-ibne-shahid/">North South University</a>, Dhaka<br>
+          <a href="https://ece.northsouth.edu/people/omar-ibne-shahid/">North South University</a>, Dhaka
         </p>
-        <p class="interests">Research interests: AI security, pattern recognition, mathematical modeling</p>
+        <p class="interests">Research interests: medical AI, biomedical signal analysis, medical imaging, wearable health monitoring</p>
 
         <ul class="links" aria-label="Profiles and contact">
           <li><a class="primary" href="assets/Omar_Ibne_Shahid_CV.pdf">
@@ -434,12 +440,11 @@
       </div>
     </div>
 
-    <figure class="trace" aria-labelledby="trace-caption">
-      <div class="trace-plot" id="trace-plot">
-        <svg id="trace-svg" viewBox="0 0 1200 150" preserveAspectRatio="none" aria-hidden="true"></svg>
-        <div class="trace-labels" id="trace-labels" aria-hidden="true"></div>
+    <figure class="monitor" aria-labelledby="monitor-caption">
+      <div class="monitor-plot" id="monitor-plot">
+        <svg id="monitor-svg" aria-hidden="true"></svg>
       </div>
-      <figcaption id="trace-caption">An illustrative accelerometer signal, segmented by activity. Most of my research starts from signals like this one.</figcaption>
+      <figcaption id="monitor-caption">An illustrative recording from a wearable monitor. <span class="key">Blue</span> marks what a model detected: heartbeats in the ECG and fetal movements in the abdominal sensor channel.</figcaption>
     </figure>
   </section>
 
@@ -450,7 +455,8 @@
       <h2>About</h2>
       <div class="block-body prose">
         <p>I am a Lecturer in the Department of Electrical and Computer Engineering at North South University in Dhaka, Bangladesh, where I teach pattern recognition and neural networks, algorithms, and digital logic design.</p>
-        <p>My research interests are AI security, pattern recognition, and mathematical modeling. Most of my work so far has been about recognizing what people are doing, or what is happening inside the body, from noisy sensor data: human activity recognition from wearable and vision sensors, physical fatigue detection, eye-tracking analysis for autism screening, and fetal movement detection with a wearable monitor. Most recently, a research grant from North South University supported my work on mathematical modeling of human activity recognition for healthcare.</p>
+        <p>My research is in medical AI: building machine learning methods that turn physiological and clinical data into information that supports diagnosis and care. I have worked on detecting fetal movement from a wearable abdominal monitor in the Wellcome Leap In Utero program, screening for autism spectrum disorder from eye-tracking data, detecting physical fatigue from wearable sensors, and recognizing activities from wearable and vision sensors for assistive healthcare. A research grant from North South University funded my recent work on mathematical modeling of human activity recognition for healthcare.</p>
+        <p>I am especially interested in biomedical signal analysis, medical imaging, and wearable health monitoring, and in making these models reliable enough to use in clinical settings.</p>
         <p>I hold an MSc in Human Factors Engineering from the University at Buffalo, The State University of New York, and a BSc in Robotics and Mechatronics Engineering from the University of Dhaka.</p>
       </div>
     </section>
@@ -660,24 +666,24 @@
             <p class="tools">Eye tracking, saliency maps, machine learning</p>
           </article>
           <article class="project">
+            <h3>Medication management interface for older adults</h3>
+            <p>A UX design for an app that helps older adults with chronic conditions keep track of their medications, with zoom, screen reader and voice input, adjustable text and display modes, and appointment reminders.</p>
+            <p class="tools">UX design, accessibility</p>
+          </article>
+          <article class="project">
             <h3>Pipe inspection crawling robot using reinforcement learning</h3>
             <p>A crawling robot that pulls itself forward with a two-degree-of-freedom arm and learns to adapt to pipes of different diameters and materials using Q-learning.</p>
             <p class="tools">Reinforcement learning, Q-learning, robotics</p>
           </article>
           <article class="project">
             <h3>Interbotix robotic arm path planning in ROS</h3>
-            <p>A simulated pick-and-place task in a custom Gazebo world. The arm lifts stationary and movable objects, moves them to target locations, and detects object colours.</p>
+            <p>A simulated pick-and-place task in a custom Gazebo world. The arm lifts stationary and movable objects, moves them to target locations, and detects object colors.</p>
             <p class="tools">ROS, Gazebo, MoveIt</p>
           </article>
           <article class="project">
             <h3>Optimal shelf-fetching routes in a warehouse</h3>
             <p>A prototype puzzle-based storage and retrieval system modeled on the 15-puzzle: eight TurtleBots stand in for shelves in a 3 × 3 grid, and the planner retrieves a target shelf along the optimal path.</p>
             <p class="tools">ROS, Gazebo, path planning</p>
-          </article>
-          <article class="project">
-            <h3>Medication management interface for older adults</h3>
-            <p>A UX design for an app that helps older adults with chronic conditions keep track of their medications, with zoom, screen reader and voice input, adjustable text and display modes, and appointment reminders.</p>
-            <p class="tools">UX design, accessibility</p>
           </article>
           <article class="project">
             <h3>IoT poultry farm monitoring device</h3>
@@ -778,7 +784,7 @@
 <footer>
   <div class="wrap">
     <span>© 2026 Omar Ibne Shahid</span>
-    <span>Last updated September 2026</span>
+    <span>Last updated October 2026</span>
   </div>
 </footer>
 
@@ -831,15 +837,13 @@
     document.querySelectorAll('main section[id]').forEach(function (s) { io.observe(s); });
   }
 
-  /* ---------- Accelerometer trace ---------- */
-  var svg = document.getElementById('trace-svg');
-  var labelBox = document.getElementById('trace-labels');
-  if (!svg) return;
-
+  /* ---------- Medical signal figure ---------- */
+  var plot = document.getElementById('monitor-plot');
+  var svg = document.getElementById('monitor-svg');
+  if (!plot || !svg) return;
   var NS = 'http://www.w3.org/2000/svg';
-  var W = 1200, H = 150, MID = 92, AMP = 50;
 
-  // Seeded random numbers, so the trace looks the same on every visit
+  // Seeded random numbers, so the recording looks the same on every visit
   var seed = 1618;
   function rand() {
     seed |= 0; seed = seed + 0x6D2B79F5 | 0;
@@ -851,99 +855,178 @@
     var u = 1 - rand(), v = rand();
     return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
   }
+  function bump(t, mu, sig) { var d = (t - mu) / sig; return Math.exp(-0.5 * d * d); }
+  function skewBump(t, mu, rise, fall) { return bump(t, mu, t < mu ? rise : fall); }
 
-  // A morning in five activities
-  var segs = [
-    { name: 'lying',    w: 0.14, cls: 'b1', base: -0.62, sig: function (t) { return 0.035 * Math.sin(2 * Math.PI * t / 95); }, noise: 0.012 },
-    { name: 'sitting',  w: 0.15, cls: 'b2', base: -0.18, sig: function (t) { return 0.02 * Math.sin(2 * Math.PI * t / 70); }, noise: 0.018 },
-    { name: 'standing', w: 0.13, cls: 'b3', base: 0.08,  sig: function (t) { return 0.045 * Math.sin(2 * Math.PI * t / 55); }, noise: 0.025 },
-    { name: 'walking',  w: 0.30, cls: 'b4', base: 0.08,  sig: function (t) { return 0.36 * Math.sin(2 * Math.PI * t / 34) + 0.13 * Math.sin(2 * Math.PI * t / 17 + 1.1); }, noise: 0.045 },
-    { name: 'running',  w: 0.28, cls: 'b5', base: 0.08,  sig: function (t) { return 0.7 * Math.sin(2 * Math.PI * t / 21) + 0.22 * Math.sin(2 * Math.PI * t / 10.5 + 0.6); }, noise: 0.075 }
+  // ---- Synthesize 12 s of signal at 250 Hz, in seconds, independent of screen width ----
+  var FS = 250, SPAN = 12, N = FS * SPAN;
+
+  // Heartbeats (R-peak times) around 72 bpm with natural beat-to-beat variation
+  var beats = [], tb = 0.38;
+  for (var i = 0; tb < SPAN; i++) {
+    beats.push(tb);
+    tb += 0.833 + 0.028 * Math.sin(2 * Math.PI * i / 4.3) + 0.012 * gauss();
+  }
+  // Fetal movement episodes in the abdominal channel
+  var events = [
+    { s: 1.55, e: 2.75, a: 0.85, f1: 6.2, f2: 10.5 },
+    { s: 5.25, e: 6.20, a: 0.62, f1: 5.1, f2: 9.3 },
+    { s: 9.10, e: 9.90, a: 0.70, f1: 6.8, f2: 11.2 }
   ];
-  var x = 0;
-  segs.forEach(function (s, i) {
-    s.start = Math.round(x * W);
-    x += s.w;
-    s.end = i === segs.length - 1 ? W : Math.round(x * W);
-  });
 
-  function segAt(i) { for (var k = 0; k < segs.length; k++) if (i < segs[k].end) return segs[k]; return segs[segs.length - 1]; }
-  function smooth(arr, win) {
-    var out = new Array(arr.length), h = Math.floor(win / 2);
-    for (var i = 0; i < arr.length; i++) {
-      var s = 0, n = 0;
-      for (var j = i - h; j <= i + h; j++) { var jj = Math.min(arr.length - 1, Math.max(0, j)); s += arr[jj]; n++; }
-      out[i] = s / n;
+  var ecg = new Float32Array(N), ppg = new Float32Array(N), abd = new Float32Array(N);
+  var PTT = 0.22; // pulse transit time from heart to sensor
+  for (var k = 0; k < N; k++) {
+    var t = k / FS, e = 0, p = 0, a = 0;
+    for (var j = 0; j < beats.length; j++) {
+      var b = beats[j];
+      if (b < t - 1.2 || b > t + 0.4) continue;
+      e += 0.11 * bump(t, b - 0.20, 0.025) - 0.10 * bump(t, b - 0.035, 0.010)
+         + 1.00 * bump(t, b, 0.011) - 0.22 * bump(t, b + 0.03, 0.011)
+         + 0.28 * bump(t, b + 0.27, 0.045);
+      p += 1.0 * skewBump(t, b + PTT + 0.13, 0.055, 0.12) + 0.33 * bump(t, b + PTT + 0.40, 0.075);
+      a += 0.05 * bump(t, b + 0.05, 0.03); // faint maternal heartbeat artifact
     }
-    return out;
+    e += 0.03 * Math.sin(2 * Math.PI * t / 3.7) + 0.006 * gauss();
+    p += 0.06 * Math.sin(2 * Math.PI * t / 4.1) + 0.004 * gauss();
+    a += 0.14 * Math.sin(2 * Math.PI * t / 3.9 + 0.7) + 0.025 * gauss(); // maternal breathing + noise
+    for (var m = 0; m < events.length; m++) {
+      var ev = events[m];
+      if (t > ev.s && t < ev.e) {
+        var w = Math.sin(Math.PI * (t - ev.s) / (ev.e - ev.s));
+        a += ev.a * w * w * (0.65 * Math.sin(2 * Math.PI * ev.f1 * t) + 0.35 * Math.sin(2 * Math.PI * ev.f2 * t + 1.3)) * (0.8 + 0.4 * rand());
+      }
+    }
+    ecg[k] = e; ppg[k] = p; abd[k] = a;
+  }
+  var abdMax = 0;
+  for (k = 0; k < N; k++) abdMax = Math.max(abdMax, Math.abs(abd[k]));
+
+  var channels = [
+    { label: 'ECG', data: ecg, share: 0.42, lo: -0.32, hi: 1.08 },
+    { label: 'Pulse (PPG)', data: ppg, share: 0.26, lo: -0.12, hi: 1.22 },
+    { label: 'Abdominal sensor', data: abd, share: 0.32, lo: -abdMax * 1.04, hi: abdMax * 1.04 }
+  ];
+
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(NS, name);
+    for (var key in attrs) n.setAttribute(key, attrs[key]);
+    if (parent) parent.appendChild(n);
+    return n;
   }
 
-  var base = [], osc = [];
-  for (var i = 0; i <= W; i++) {
-    var s = segAt(i);
-    base.push(s.base);
-    // Fade the oscillation in and out near each boundary so transitions look physical
-    var edge = Math.min(i - s.start, s.end - i);
-    var fade = Math.max(0, Math.min(1, edge / 18));
-    osc.push(s.sig(i - s.start) * fade + s.noise * gauss());
+  var state = null, lastW = 0;
+
+  function render(animate) {
+    var W = Math.round(plot.clientWidth), H = Math.round(plot.clientHeight);
+    if (!W || !H) return;
+    lastW = W;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+
+    var narrow = W < 640;
+    var pxs = narrow ? W / 4 : 130;      // pixels per second
+    var dur = W / pxs;                   // seconds shown
+    var labelRow = narrow ? 20 : 23;
+
+    // ECG paper: small squares are 0.04 s, large squares 0.2 s
+    var minor = 0.04 * pxs, major = 5 * minor, dMin = '', dMaj = '', x, y, n;
+    for (n = 0, x = 0.5; x <= W; n++, x = 0.5 + n * minor) { if (n % 5) dMin += 'M' + x.toFixed(1) + ' 0V' + H; else dMaj += 'M' + x.toFixed(1) + ' 0V' + H; }
+    for (n = 0, y = 0.5; y <= H; n++, y = 0.5 + n * minor) { if (n % 5) dMin += 'M0 ' + y.toFixed(1) + 'H' + W; else dMaj += 'M0 ' + y.toFixed(1) + 'H' + W; }
+    if (minor >= 4.5) el('path', { d: dMin, 'class': 'grid-minor' }, svg);
+    el('path', { d: dMaj, 'class': 'grid-major' }, svg);
+
+    var defs = el('defs', {}, svg);
+    var clip = el('clipPath', { id: 'sweep-clip' }, defs);
+    var clipRect = el('rect', { x: 0, y: 0, width: animate ? 0 : W, height: H }, clip);
+    var revealed = el('g', { 'clip-path': 'url(#sweep-clip)' }, svg);
+
+    var top = 0, peaks = [], readouts = [];
+    var last = Math.min(N - 1, Math.floor(dur * FS));
+    channels.forEach(function (ch, ci) {
+      var h = Math.round(H * ch.share);
+      if (ci === channels.length - 1) h = H - top;
+      var y0 = top + labelRow, y1 = top + h - 7;
+      var yOf = function (v) { return y1 - (v - ch.lo) / (ch.hi - ch.lo) * (y1 - y0); };
+      ch.top = top; ch.h = h; ch.yOf = yOf;
+      if (ci) el('line', { x1: 0, x2: W, y1: top + 0.5, y2: top + 0.5, 'class': 'sep' }, svg);
+
+      // Fetal movement detections sit behind the abdominal trace
+      if (ch.data === abd) {
+        var found = 0;
+        events.forEach(function (ev) {
+          if (ev.e > dur - 0.05) return;
+          found++;
+          el('rect', { x: ev.s * pxs, y: top + 1, width: (ev.e - ev.s) * pxs, height: h - 2, 'class': 'band' }, revealed);
+          el('rect', { x: ev.s * pxs, y: top + labelRow - 5, width: (ev.e - ev.s) * pxs, height: 2, 'class': 'band-bar' }, revealed);
+        });
+        ch.readout = found + (found === 1 ? ' fetal movement' : ' fetal movements');
+      }
+
+      var d = '';
+      for (var k = 0; k <= last; k++) d += (k ? 'L' : 'M') + (k / FS * pxs).toFixed(1) + ' ' + yOf(ch.data[k]).toFixed(1);
+      el('path', { d: d, 'class': 'sig' }, revealed);
+      top += h;
+    });
+
+    // Detected heartbeats and heart rate
+    var ecgCh = channels[0], shown = [];
+    beats.forEach(function (b) {
+      if (b > dur - 0.02) return;
+      shown.push(b);
+      var c = el('circle', { cx: (b * pxs).toFixed(1), cy: ecgCh.yOf(ecg[Math.round(b * FS)]).toFixed(1), r: narrow ? 2.3 : 2.7, 'class': 'peak' }, svg);
+      peaks.push({ x: b * pxs, node: c });
+    });
+    var rr = (shown[shown.length - 1] - shown[0]) / (shown.length - 1);
+    ecgCh.readout = Math.round(60 / rr) + ' bpm';
+
+    channels.forEach(function (ch) {
+      el('text', { x: 8, y: ch.top + 15, 'class': 'ch-label' }, svg).textContent = ch.label;
+      if (ch.readout) {
+        var r = el('text', { x: W - 8, y: ch.top + 15, 'text-anchor': 'end', 'class': 'readout' }, svg);
+        r.textContent = ch.readout;
+        readouts.push(r);
+      }
+    });
+
+    state = { W: W, H: H, clipRect: clipRect, peaks: peaks, readouts: readouts };
+    if (!animate) {
+      peaks.forEach(function (p) { p.node.classList.add('on'); });
+      readouts.forEach(function (r) { r.classList.add('on'); });
+      return;
+    }
+    sweep();
   }
-  base = smooth(base, 41);
-  var y = smooth(base.map(function (b, i) { return b + osc[i]; }), 3);
 
-  var d = '';
-  for (i = 0; i <= W; i++) {
-    var v = Math.max(-1.05, Math.min(1.05, y[i]));
-    d += (i ? 'L' : 'M') + i + ' ' + (MID - v * AMP).toFixed(2);
-  }
-
-  // Background bands
-  segs.forEach(function (s) {
-    var r = document.createElementNS(NS, 'rect');
-    r.setAttribute('x', s.start); r.setAttribute('y', 0);
-    r.setAttribute('width', s.end - s.start); r.setAttribute('height', H);
-    r.setAttribute('class', 'band ' + s.cls);
-    svg.appendChild(r);
-
-    var lab = document.createElement('span');
-    lab.className = s.cls;
-    lab.textContent = s.name;
-    lab.style.left = (s.start / W * 100) + '%';
-    labelBox.appendChild(lab);
-    s.label = lab;
-  });
-
-  // Clip used to draw the trace from left to right
-  var defs = document.createElementNS(NS, 'defs');
-  var clip = document.createElementNS(NS, 'clipPath');
-  clip.setAttribute('id', 'reveal');
-  var clipRect = document.createElementNS(NS, 'rect');
-  clipRect.setAttribute('x', 0); clipRect.setAttribute('y', -20);
-  clipRect.setAttribute('height', H + 40); clipRect.setAttribute('width', 0);
-  clip.appendChild(clipRect); defs.appendChild(clip); svg.appendChild(defs);
-
-  var path = document.createElementNS(NS, 'path');
-  path.setAttribute('d', d);
-  path.setAttribute('class', 'trace-line');
-  path.setAttribute('clip-path', 'url(#reveal)');
-  svg.appendChild(path);
-
-  function show(px) {
-    clipRect.setAttribute('width', px);
-    segs.forEach(function (s) { if (px >= s.start + 12) s.label.classList.add('on'); });
+  function sweep() {
+    var st = state, line = el('line', { x1: 0, x2: 0, y1: 0, y2: st.H, 'class': 'sweep' }, svg);
+    var dur = 2800, t0 = null;
+    function frame(ts) {
+      if (state !== st) return;            // a resize re-rendered the figure
+      if (t0 === null) t0 = ts;
+      var p = Math.min(1, (ts - t0) / dur);
+      var x = p * (st.W + 2);              // constant speed, like a monitor sweep
+      st.clipRect.setAttribute('width', x);
+      line.setAttribute('x1', x); line.setAttribute('x2', x);
+      st.peaks.forEach(function (pk) { if (pk.x <= x) pk.node.classList.add('on'); });
+      if (p < 1) { requestAnimationFrame(frame); return; }
+      line.remove();
+      st.readouts.forEach(function (r) { r.classList.add('on'); });
+    }
+    // Start once the page has settled
+    setTimeout(function () { requestAnimationFrame(frame); }, 250);
   }
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) { show(W + 10); return; }
+  render(!reduce);
 
-  var dur = 2600, t0 = null;
-  function frame(ts) {
-    if (t0 === null) t0 = ts;
-    var p = Math.min(1, (ts - t0) / dur);
-    var eased = 1 - Math.pow(1 - p, 2.2);
-    show(eased * (W + 10));
-    if (p < 1) requestAnimationFrame(frame);
-  }
-  setTimeout(function () { requestAnimationFrame(frame); }, 250);
+  var timer;
+  window.addEventListener('resize', function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      if (Math.abs(Math.round(plot.clientWidth) - lastW) > 1) render(false);
+    }, 150);
+  });
 })();
 </script>
 </body>
