@@ -9,7 +9,6 @@ assets/profile.jpg              your photo (add this yourself, see below)
 ```
 
 ## Put it online with GitHub Pages
-
 1. Sign in to GitHub and create a new **public** repository named exactly
    `YOUR-USERNAME.github.io` (for example `omarshahid232.github.io`).
    Using that name makes the site live at `https://YOUR-USERNAME.github.io`.
